@@ -1,0 +1,211 @@
+type Blog {
+  author: String
+  author_id: ID
+  blog_type: String
+  created_at: DateTime
+  id: ID!
+  image: String
+  text: String
+  user: User
+    @materializer(
+      query: "getUser"
+      arguments: [{ name: "id", field: "author_id" }]
+    )
+  voteList: [Vote] @materializer(query: "getVoteUsingBlog_id")
+}
+
+type Comment {
+  author: String
+  author_id: ID
+  created_at: DateTime
+  id: ID!
+}
+
+type User {
+  blogList: [Blog] @materializer(query: "getBlogUsingAuthor_id")
+  created_at: DateTime
+  email: String
+  id: ID!
+  username: String
+}
+
+type Vote {
+  blog: Blog
+    @materializer(
+      query: "getBlog"
+      arguments: [{ name: "id", field: "blog_id" }]
+    )
+  blog_id: ID
+  created_at: DateTime
+  id: ID!
+  upvote: Boolean
+  username: String
+}
+
+"""
+These are some examples of queries generated from the schema. Feel free to modify them or add your own.
+"""
+type Query {
+  getBlogList: [Blog]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "blog"
+      configuration: "postgresql_config"
+    )
+  getBlog(id: ID!): Blog
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "blog"
+      configuration: "postgresql_config"
+    )
+  getVoteUsingBlog_id(id: ID!): [Vote]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."blog_id", T."created_at", T."id", T."upvote", T."username"
+        FROM "public"."vote" T
+        WHERE T."blog_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getCommentList: [Comment]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      configuration: "postgresql_config"
+    )
+  getComment(id: ID!): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      configuration: "postgresql_config"
+    )
+  getUserList: [User]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "user"
+      configuration: "postgresql_config"
+    )
+  getUser(id: ID!): User
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "user"
+      configuration: "postgresql_config"
+    )
+  getBlogUsingAuthor_id(id: ID!): [Blog]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."author", T."author_id", T."blog_type", T."created_at", T."id", T."image", T."text"
+        FROM "public"."blog" T
+        WHERE T."author_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getVoteList: [Vote]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "vote"
+      configuration: "postgresql_config"
+    )
+  getVote(id: ID!): Vote
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "vote"
+      configuration: "postgresql_config"
+    )
+}
+
+"""
+These are some examples of mutations generated from the schema. Feel free to modify them or add your own.
+"""
+type Mutation {
+  insertBlog(
+    image: String!
+    author: String!
+    text: String!
+    created_at: DateTime!
+    blog_type: String!
+    author_id: ID!
+  ): Blog
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "blog"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteBlog(id: ID!): Blog
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "blog"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertComment(
+    created_at: DateTime!
+    author: String!
+    author_id: ID!
+  ): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteComment(id: ID!): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertUser(created_at: DateTime!, username: String!, email: String!): User
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "user"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteUser(id: ID!): User
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "user"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertVote(
+    created_at: DateTime!
+    blog_id: ID!
+    upvote: Boolean!
+    username: String!
+  ): Vote
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "vote"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteVote(id: ID!): Vote
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "vote"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+}
