@@ -4,6 +4,7 @@ import Icon from "./favicon.ico"
 import ContrastPost from "../components/ContrastPost"
 import Post from "../components/Post"
 import Widget from "../components/Widget"
+import Footer from "../components/Footer"
 
 const Home: NextPage = () => {
 
@@ -23,11 +24,13 @@ const Home: NextPage = () => {
         <div className="w-2/3">
           <Post />
         </div>
-        <div className="w-1/3">
+        <div className="w-1/3 max-w-sm">
           <Widget />
         </div>
 
       </div>
+
+      <Footer/>
 
     </div>
   )

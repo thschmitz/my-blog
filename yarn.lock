@@ -602,7 +602,14 @@
     "preact-render-to-string" "^5.1.19"
     "uuid" "^8.3.2"
 
-"next@latest":
+"next-link@^2.0.0":
+  "integrity" "sha512-aXT3ge5A97E+8jkjiWXf5uqw4NfT43vWV8YxoO91z8wURg16dlHOc8CmjHYMftaJDj9jQuJSTbg4TyaeiSBijQ=="
+  "resolved" "https://registry.npmjs.org/next-link/-/next-link-2.0.0.tgz"
+  "version" "2.0.0"
+  dependencies:
+    "on-headers" "^1.0.1"
+
+"next@^12.1.6":
   "integrity" "sha512-cebwKxL3/DhNKfg9tPZDQmbRKjueqykHHbgaoG4VBRH3AHQJ2HO0dbKFiS1hPhe1/qgc2d/hFeadsbPicmLD+A=="
   "resolved" "https://registry.npmjs.org/next/-/next-12.1.6.tgz"
   "version" "12.1.6"
@@ -664,6 +671,11 @@
   "integrity" "sha512-EvoOtz6FIEBzE+9q253HsLCVRiK/0doEJ2HCvvqMQb3dHZrP3WlJKYtJ55CRTw4jmYomzH4wkPuCj/I3ZvpKxQ=="
   "resolved" "https://registry.npmjs.org/oidc-token-hash/-/oidc-token-hash-5.0.1.tgz"
   "version" "5.0.1"
+
+"on-headers@^1.0.1":
+  "integrity" "sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA=="
+  "resolved" "https://registry.npmjs.org/on-headers/-/on-headers-1.0.2.tgz"
+  "version" "1.0.2"
 
 "openid-client@^5.1.0":
   "integrity" "sha512-HTFaXWdUHvLFw4GaEMgC0jXYBgpjgzQQNHW1pZsSqJorSgrXzxJ+4u/LWCGaClDEse5HLjXRV+zU5Bn3OefiZw=="
