@@ -6,6 +6,7 @@ type Blog {
   id: ID!
   image: String
   text: String
+  title: String
   user: User
     @materializer(
       query: "getUser"
@@ -102,7 +103,7 @@ type Query {
     @dbquery(
       type: "postgresql"
       query: """
-      SELECT T."author", T."author_id", T."blog_type", T."created_at", T."id", T."image", T."text"
+      SELECT T."author", T."author_id", T."blog_type", T."created_at", T."id", T."image", T."text", T."title"
         FROM "public"."blog" T
         WHERE T."author_id" = $1
       """
@@ -122,6 +123,15 @@ type Query {
       table: "vote"
       configuration: "postgresql_config"
     )
+  
+  getBlogs: [Blog]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "blog"
+      """
+      configuration: "postgresql_config"
+    )
 }
 
 """
@@ -135,6 +145,7 @@ type Mutation {
     created_at: DateTime!
     blog_type: String!
     author_id: ID!
+    title: String!
   ): Blog
     @dbquery(
       type: "postgresql"

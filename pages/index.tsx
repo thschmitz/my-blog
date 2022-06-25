@@ -5,10 +5,19 @@ import ContrastPost from "../components/ContrastPost"
 import Post from "../components/Post"
 import Widget from "../components/Widget"
 import Footer from "../components/Footer"
+import { useSession } from 'next-auth/react'
+import { useQuery } from '@apollo/client'
+import { GET_BLOGS } from '../graphql/queries'
 
 const Home: NextPage = () => {
 
-  
+  const {data: session} = useSession();
+
+  const {data: dataPosts, error:errorPosts} = useQuery(GET_BLOGS)
+
+  const posts = dataPosts?.getBlogs;
+
+  console.log("posts: ", posts)
 
   return (
     <div className="max-w-full my-8 mx-auto">
