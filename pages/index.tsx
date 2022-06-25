@@ -7,17 +7,19 @@ import Widget from "../components/Widget"
 import Footer from "../components/Footer"
 import { useSession } from 'next-auth/react'
 import { useQuery } from '@apollo/client'
-import { GET_BLOGS } from '../graphql/queries'
+import { GET_BLOGS, GET_RECENT_BLOGS } from '../graphql/queries'
 
 const Home: NextPage = () => {
 
   const {data: session} = useSession();
 
   const {data: dataPosts, error:errorPosts} = useQuery(GET_BLOGS)
-
   const posts = dataPosts?.getBlogs;
 
-  console.log("posts: ", posts)
+  const {data: dataRecentPosts, error: errorRecentPosts} = useQuery(GET_RECENT_BLOGS)
+  const recentPosts = dataRecentPosts?.getRecentBlogs;
+
+  console.log("posts: ", recentPosts)
 
   return (
     <div className="max-w-full my-8 mx-auto">
@@ -31,10 +33,10 @@ const Home: NextPage = () => {
 
       <div className="flex flex-1">
         <div className="w-2/3">
-          <Post />
+          <Post posts={posts}/>
         </div>
         <div className="w-1/3 max-w-sm">
-          <Widget />
+          <Widget posts={recentPosts} />
         </div>
 
       </div>

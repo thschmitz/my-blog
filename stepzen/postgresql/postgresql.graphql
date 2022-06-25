@@ -132,6 +132,27 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+  
+  getRecentBlogs: [Blog]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "blog"
+      order by "created_at" desc
+      limit 3
+      """
+      configuration: "postgresql_config"
+    )
+
+  getSinglePost(id: ID!): Blog
+    @dbquery(
+      type: "postgresql"
+      query: """
+      select * from "blog"
+      where id = $1
+      """
+      configuration: "postgresql_config"
+    )
 }
 
 """
