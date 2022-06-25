@@ -10,7 +10,10 @@ type Blog {
   user: User
     @materializer(
       query: "getUser"
-      arguments: [{ name: "id", field: "author_id" }]
+      arguments: [
+        { name: "id", field: "author_id" }
+        { name: "id", field: "author_id" }
+      ]
     )
   voteList: [Vote] @materializer(query: "getVoteUsingBlog_id")
 }
@@ -28,13 +31,17 @@ type User {
   email: String
   id: ID!
   username: String
+  bio: String
 }
 
 type Vote {
   blog: Blog
     @materializer(
       query: "getBlog"
-      arguments: [{ name: "id", field: "blog_id" }]
+      arguments: [
+        { name: "id", field: "blog_id" }
+        { name: "id", field: "blog_id" }
+      ]
     )
   blog_id: ID
   created_at: DateTime
@@ -123,7 +130,6 @@ type Query {
       table: "vote"
       configuration: "postgresql_config"
     )
-  
   getBlogs: [Blog]
     @dbquery(
       type: "postgresql"
@@ -132,7 +138,6 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  
   getRecentBlogs: [Blog]
     @dbquery(
       type: "postgresql"
@@ -143,7 +148,6 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-
   getSinglePost(id: ID!): Blog
     @dbquery(
       type: "postgresql"
