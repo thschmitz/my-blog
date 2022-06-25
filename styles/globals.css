@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .iconWidget{
+        @apply cursor-pointer hover:text-red-500;
+    }
+}
