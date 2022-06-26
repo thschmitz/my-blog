@@ -12,7 +12,7 @@ const Header = () => {
     return (
         <div className="sticky top-0 z-50 bg-white px-4 py-5 shadow-sm items-center justify-center flex space-x-20">
             <div className="relative h-12 w-20 flex-shrink-0 cursor-pointer justify-start ">
-                <a href="/"><img src="https://thschmitz.netlify.app/static/media/logo.419c2045413bd279e6d2.png" className="mt-1 lg:inline" alt="logo"/></a>
+                <Link href="/"><img src="https://thschmitz.netlify.app/static/media/logo.419c2045413bd279e6d2.png" className="mt-1 lg:inline" alt="logo"/></Link>
             </div>
             <div className="items-center text-gray-500 mx-5 space-x-20 hidden lg:flex">
                 <div className="text-center flex lg:inline-flex space-x-20">

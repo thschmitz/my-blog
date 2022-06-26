@@ -9,6 +9,7 @@
     "@apollo/client": "^3.6.9",
     "@heroicons/react": "^1.0.6",
     "@mui/material": "^5.8.5",
+    "@uiball/loaders": "^1.2.6",
     "graphql": "^16.5.0",
     "next": "^12.1.6",
     "next-auth": "^4.6.1",
