@@ -3,11 +3,37 @@ import Link from "next/link"
 import {MenuIcon, ChevronDownIcon, HomeIcon, SearchIcon} from "@heroicons/react/solid"
 import {signIn, signOut, useSession} from "next-auth/react"
 import {useRouter} from "next/router"
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 
 const Header = () => {
 
     const {data: session} = useSession()
     const router = useRouter();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (e) => {
+        setAnchorEl(e.currentTarget);
+    };
+    const handleProfile = () => {
+        
+        setAnchorEl(null);
+    };
+
+    const handleLogOut = () => {
+        signOut()
+        setAnchorEl(null);
+    }
+
+    console.log("session: ", session?.user)
+
+    const profileClicked = () => {
+
+    }
 
     return (
         <div className="sticky top-0 z-50 bg-white px-4 py-5 shadow-sm items-center justify-center flex space-x-20">
@@ -25,14 +51,48 @@ const Header = () => {
                 {
                     session?
                     <div className="icon-sm">
-                        <div className="flex-1 text-xs">
-                            <p className="flex justify-center cursor-pointer">Logged</p>
-                            <p className="flex justify-center cursor-pointer">{session?.user?.name?.substring(0,2)}...</p>
+                        <div onClick={() => profileClicked()} className="flex-1 text-xs">
+                            {
+                                session?.user?.image?
+                                    <Button
+                                        id="basic-button"
+                                        aria-controls={open ? 'basic-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleClick}
+                                    >
+                                        <img src={session?.user?.image} className="rounded-full w-9 cursor-pointer"></img>
+                                    </Button>
+                                :
+                                    <Button
+                                        id="basic-button"
+                                        aria-controls={open ? 'basic-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleClick}
+                                    >
+                                        <Avatar sx={{ bgcolor: red[500],width:35, height: 35 }}>{session?.user?.name[0]}</Avatar>
+                                    </Button>
+                            }
+
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleProfile}
+                                onClose={handleLogOut}
+                                MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <Link href={`profile/1`}><MenuItem onClick={handleProfile}>Profile</MenuItem></Link>
+                                <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                            </Menu>
                         </div>
                     </div>
                     :
                     <div className="icon-sm">
-                        <div className="flex-1">
+                        <div onClick={() => signIn()} className="flex-1">
                             <p className="text-white rounded-full p-2 bg-red-400 cursor-pointer flex justify-center">SignIn</p>
                         </div>
                         

@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/WidgetRow.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/WidgetRow.jsx", "pages/profile/[userId].jsx"],
   "exclude": ["node_modules"]
 }
