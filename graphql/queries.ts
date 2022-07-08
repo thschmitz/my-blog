@@ -44,3 +44,11 @@ export const GET_SINGLE_BLOG = gql`
         }
     }
 `
+
+export const GET_ID_BY_USERNAME = gql`
+    query MyQuery($username: String!){
+        getIdByUsername(username: $username){
+            id
+        }
+    }
+`

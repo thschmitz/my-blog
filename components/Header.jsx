@@ -14,20 +14,17 @@ const Header = () => {
 
     const {data: session} = useSession()
     const router = useRouter();
+    console.log(router.query)
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
     };
-    const handleProfile = () => {
-        
+    
+    const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const handleLogOut = () => {
-        signOut()
-        setAnchorEl(null);
-    }
 
     console.log("session: ", session?.user)
 
@@ -75,19 +72,21 @@ const Header = () => {
                                     </Button>
                             }
 
-                            <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleProfile}
-                                onClose={handleLogOut}
-                                MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                                }}
-                            >
-                                <Link href={`profile/1`}><MenuItem onClick={handleProfile}>Profile</MenuItem></Link>
-                                <MenuItem onClick={handleLogOut}>Logout</MenuItem>
-                            </Menu>
+                            {
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    <Link href={`profile/1`}><MenuItem onClick={handleClose}>Profile</MenuItem></Link>
+                                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                </Menu>
+                            }
+
                         </div>
                     </div>
                     :
