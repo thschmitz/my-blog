@@ -2,67 +2,52 @@ import React from 'react'
 import {useSession} from "next-auth/react"
 import {useRouter} from "next/router"
 import Link from "next/link"
+import {GET_USER_BY_ID} from "../../graphql/queries"
+import {useQuery} from "@apollo/client"
 
 const Profile = () => {
 
-  const router = useRouter();
+    const router = useRouter();
+    const {data:session} = useSession();
+    console.log(session);
 
-  console.log(router.query.userId);
+    const {data:dataUser, loading:loadingUser, error:errorUser} = useQuery(GET_USER_BY_ID, {
+        variables: {
+            id: router.query.userId
+        }
+    })
+    
+    const user = dataUser?.getUserById;
+    const createdHour = `${user?.created_at[8]}${user?.created_at[9]}/${user?.created_at[5]}${user?.created_at[6]}/${user?.created_at[0]}${user?.created_at[1]}${user?.created_at[2]}${user?.created_at[3]} ${user?.created_at[11]}${user?.created_at[12]}:${user?.created_at[14]}${user?.created_at[15]}`
 
-  return (
-    <div className={`h-24 bg-red-400 p-8`}>
-      <div>
-          <div className="-mx-8 mt-10 bg-white">
-              <div className="mx-auto flex max-w-5xl items-center space-x-4 pb-3">
-                  <div className="-mt-5">
-                  </div>
-                  <div className="py-2">
-                      <h1 className="text-3xl font-semibold">Welcome to r/ Profile</h1>
-                      <p><span className="dateCreated">Created Time: </span><span className="dateCreated"> GMT</span></p>
-                      {
-                          <div className="flex items-center">
-                              <div className="flex items-center mr-5 space-x-1">
-                                  <Link href={`/user/${router.query.userId}/followers`}>
-                                      <p className="cursor-pointer">Followers •</p>
-                                  </Link>
-                                  <p className="font-bold text-xl"></p>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                  <Link href={`/user/${router.query.userId}/following`}>
-                                      <p className="cursor-pointer">Following •</p>
-                                  </Link>
-                                  <p className="font-bold text-xl"></p>
-                              </div>
-                          </div>
-                      }
-                  </div>
+    return (
+        <div className={`h-24 bg-red-400 p-8`}>
+            <div>
+                <div className="-mx-8 mt-10 bg-white">
+                    <div className="mx-auto flex max-w-5xl items-center space-x-4 pb-3">
+                        <div className="-mt-5">
+                            <img src={user?.image} className="rounded-full h-24 w-24" alt="avatar"/>
+                        </div>
+                        <div className="py-2">
+                            <h1 className="text-3xl font-semibold">Welcome to {user.username}'s Profile</h1>
+                            <p><span className="dateCreated">Created Time: </span>{createdHour}<span className="dateCreated"> GMT</span></p>
 
-              </div>
-          </div>
+                        </div>
 
-          {
+                    </div>
+                </div>
+            {
+                session?.user?.name === user?.username?
+                <div>
+                    <h1>Quer adicionar um novo blog?</h1>                            
+                </div>
+                :
 
-                  <div className="text-2xl text-center bg-white rounded-lg mt-10 p-4 flex-1 space-y-4 max-w-5xl my-7 mx-auto">
-                      {
-                              <h1>See <span className="text-red-400">0 post(s)</span> that <span className="underline">you</span> have already created</h1>
-                      }
-                  </div>
-          }
-          <div className="mt-10 flex-1 space-y-4 max-w-5xl my-7 mx-auto">
-              {
-                          <div className="flex w-full items-center justify-center p-20 text-xl">
-                              <p>No posts found</p>
-                          </div>
-              }
-
-          </div>
-      </div>
-
-
-
-
+                ""
+            }
+            </div>
         </div>
-  )
+    )
 }
 
 export default Profile;

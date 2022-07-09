@@ -32,6 +32,7 @@ type User {
   id: ID!
   username: String
   bio: String
+  image: String
 }
 
 type Vote {
@@ -69,11 +70,11 @@ type Query {
       configuration: "postgresql_config"
     )
   
-  getIdByUsername(username: String!): [User]
+  getIdByUsername(username: String!): User
     @dbquery(
       type: "postgresql"
       query: """
-        SELECT id FROM "user" WHERE "username" = $1
+        SELECT "id" FROM "user" WHERE "username" = $1
       """
       configuration: "postgresql_config"
     )
@@ -85,6 +86,15 @@ type Query {
       SELECT T."blog_id", T."created_at", T."id", T."upvote", T."username"
         FROM "public"."vote" T
         WHERE T."blog_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  
+  getEmailCheck(email: String!): [User]
+    @dbquery(
+      type: "postgresql"
+      query: """
+        SELECT "email" FROM "user" WHERE "email" = $1
       """
       configuration: "postgresql_config"
     )
@@ -110,6 +120,14 @@ type Query {
       configuration: "postgresql_config"
     )
   getUser(id: ID!): User
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "user"
+      configuration: "postgresql_config"
+    )
+
+  getUserById(id: ID!): User
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -167,6 +185,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+  
 }
 
 """
@@ -217,7 +236,7 @@ type Mutation {
       dml: DELETE
       configuration: "postgresql_config"
     )
-  insertUser(created_at: DateTime!, username: String!, email: String!): User
+  insertUser(username: String!, email: String!, image: String): User
     @dbquery(
       type: "postgresql"
       schema: "public"

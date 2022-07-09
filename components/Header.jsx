@@ -8,11 +8,12 @@ import { red } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
+import {CHECK_EMAIL,GET_ID_BY_USERNAME} from "../graphql/queries"
+import {ADD_USER} from "../graphql/mutations";
+import {ApolloProvider, useQuery, useMutation} from "@apollo/client"
 
 const Header = () => {
 
-    const {data: session} = useSession()
     const router = useRouter();
     console.log(router.query)
     const [anchorEl, setAnchorEl] = useState(null);
@@ -26,11 +27,51 @@ const Header = () => {
         setAnchorEl(null);
     };
 
-    console.log("session: ", session?.user)
-
     const profileClicked = () => {
 
     }
+
+
+    const {data: session} = useSession()
+
+    const {data:dataUser, loading:loadingUser, error:errorUser} = useQuery(CHECK_EMAIL, {
+        variables: {
+            email: session?.user?.email
+        }
+    })
+
+    const {data:dataId, loading:loadingId, error:errorId} = useQuery(GET_ID_BY_USERNAME, {
+        variables: {
+            username: session?.user?.name
+        }
+    })
+
+    const [addUser] = useMutation(ADD_USER)
+
+    // If there is a logged user, look into database and check if there is a user with the same email
+    
+    useEffect(() => {
+
+        if (session?.user?.email) {
+            const email = session.user.email;
+            const checkEmail = dataUser?.getEmailCheck;
+
+            if(checkEmail?.length === 0){
+                addUser({
+                    variables: {
+                        username: session.user.name,
+                        email: session.user.email,
+                        image: session.user.image,
+                    }
+                })
+            }
+
+        }
+    }, [])
+
+    const userId = dataId?.getIdByUsername;
+
+    console.log(userId)
 
     return (
         <div className="sticky top-0 z-50 bg-white px-4 py-5 shadow-sm items-center justify-center flex space-x-20">
@@ -82,7 +123,7 @@ const Header = () => {
                                     'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <Link href={`profile/1`}><MenuItem onClick={handleClose}>Profile</MenuItem></Link>
+                                    <Link href={`profile/${userId?.id}`}><MenuItem onClick={handleClose}>Profile</MenuItem></Link>
                                     <MenuItem onClick={handleClose}>Logout</MenuItem>
                                 </Menu>
                             }

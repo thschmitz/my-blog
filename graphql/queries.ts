@@ -52,3 +52,24 @@ export const GET_ID_BY_USERNAME = gql`
         }
     }
 `
+
+export const CHECK_EMAIL = gql`
+    query MyQuery($email: String!){
+        getEmailCheck(email: $email){
+            email
+        }
+    }
+`
+
+export const GET_USER_BY_ID = gql`
+    query MyQuery($id: ID!){
+        getUserById(id: $id){
+            id
+            username
+            email
+            image
+            created_at
+            bio
+        }
+    }
+`
