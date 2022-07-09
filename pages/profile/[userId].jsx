@@ -41,17 +41,6 @@ const Profile = () => {
       setValue(newValue);
     };
 
-    // TAKE THE FILE FROM THE INPUT AND SET IT INTO THE USESTATE
-    const onSelectFile = e => {
-        if (!e.target.files || e.target.files.length === 0) {
-            setSelectedFile(undefined)
-            return
-        }
-
-        // I've kept this example simple by using the first image instead of multiple
-        setSelectedFile(e.target.files[0])
-    }
-
     // TAKE ALL THE INFORMATIONS ABOUT THE USER FROM THE GRAPHQL QUERY
 
     const {data:dataUser, loading:loadingUser, error:errorUser} = useQuery(GET_USER_BY_ID, {
@@ -80,14 +69,12 @@ const Profile = () => {
         const title = document.getElementById("title").value;
         const text = document.getElementById("text").value;
         const type = document.getElementById("type").value;
-        const image = preview;
+        const image = document.getElementById("image").value;
 
         if(title === "" || text === "" || type === "" || image === ""){
             alert("Please fill all the fields")
             return
         }
-
-        console.log(selectedFile)
 
         addBlog({
             variables: {
@@ -100,7 +87,7 @@ const Profile = () => {
             }
         }).then(() => {
             alert("Blog created")
-            router.push("/profile")
+            router.push("/")
         }).catch((error) => {
             alert("Error: ", error)
             console.log(error)
@@ -112,8 +99,6 @@ const Profile = () => {
 
         console.log(title, text, type, image);
     }
-
-    console.log("user: ", user)
 
     return (
         <div className={`h-24 bg-red-400 p-8`}>
@@ -165,13 +150,10 @@ const Profile = () => {
                                             label="Blog's Body"
                                             multiline
                                             required
-                                            rows={4}
+                                            rows={6}
                                         />
                                         <TextField id="type" required label="Blog Type" variant="outlined" />
-                                        <p className="mt-5 font-bold mb-2">Select an image for your blog</p>
-                                        <input onChange={onSelectFile} type="file" id="image" name="file" />
-                                        {selectedFile && <img className="mt-10" src={preview} />}
-                                        {preview && console.log(selectedFile)}
+                                        <TextField id="image" required label="Image URL" variant="outlined" />
                                         <Stack className="mt-10" spacing={2} direction="row">
                                             <Button onClick={(e) => createHandle(e)} variant="contained">Create</Button>
                                         </Stack>
