@@ -244,6 +244,15 @@ type Mutation {
       dml: INSERT
       configuration: "postgresql_config"
     )
+
+  insertPost(text: String!, author:String!, author_id: ID!, title: String!, image: String, blog_type: String!): Blog
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "blog"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
   deleteUser(id: ID!): User
     @dbquery(
       type: "postgresql"
