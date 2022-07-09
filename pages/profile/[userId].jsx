@@ -113,6 +113,8 @@ const Profile = () => {
         console.log(title, text, type, image);
     }
 
+    console.log("user: ", user)
+
     return (
         <div className={`h-24 bg-red-400 p-8`}>
             <div>

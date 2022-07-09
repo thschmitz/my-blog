@@ -15,7 +15,6 @@ import {ApolloProvider, useQuery, useMutation} from "@apollo/client"
 const Header = () => {
 
     const router = useRouter();
-    console.log(router.query)
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -23,13 +22,14 @@ const Header = () => {
         setAnchorEl(e.currentTarget);
     };
     
-    const handleClose = () => {
+    const handleClose = (props) => {
+        console.log(props)
         setAnchorEl(null);
+
+        if(props === "logout"){
+            signOut()
+        }
     };
-
-    const profileClicked = () => {
-
-    }
 
 
     const {data: session} = useSession()
@@ -39,6 +39,8 @@ const Header = () => {
             email: session?.user?.email
         }
     })
+
+    const checkEmail = dataUser?.getEmailCheck;
 
     const {data:dataId, loading:loadingId, error:errorId} = useQuery(GET_ID_BY_USERNAME, {
         variables: {
@@ -53,9 +55,7 @@ const Header = () => {
     useEffect(() => {
 
         if (session?.user?.email) {
-            const email = session.user.email;
-            const checkEmail = dataUser?.getEmailCheck;
-
+            console.log("checkEmail: ", checkEmail?.length)
             if(checkEmail?.length === 0){
                 addUser({
                     variables: {
@@ -67,11 +67,10 @@ const Header = () => {
             }
 
         }
-    }, [])
+    }, [session])
 
     const userId = dataId?.getIdByUsername;
 
-    console.log(userId)
 
     return (
         <div className="sticky top-0 z-50 bg-white px-4 py-5 shadow-sm items-center justify-center flex space-x-20">
@@ -89,7 +88,7 @@ const Header = () => {
                 {
                     session?
                     <div className="icon-sm">
-                        <div onClick={() => profileClicked()} className="flex-1 text-xs">
+                        <div className="flex-1 text-xs">
                             {
                                 session?.user?.image?
                                     <Button
@@ -123,8 +122,8 @@ const Header = () => {
                                     'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <Link href={`profile/${userId?.id}`}><MenuItem onClick={handleClose}>Profile</MenuItem></Link>
-                                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                    <Link href={`/profile/${userId?.id}`}><MenuItem onClick={() => handleClose("profile")}>Profile</MenuItem></Link>
+                                    <Link href="/"><MenuItem onClick={() => handleClose("logout")}>Logout</MenuItem></Link>
                                 </Menu>
                             }
 
