@@ -4,7 +4,7 @@ import {useRouter} from "next/router"
 import Link from "next/link"
 import {GET_USER_BY_ID} from "../../graphql/queries"
 import {ADD_BLOG} from "../../graphql/mutations"
-import {useQuery} from "@apollo/client"
+import {useQuery, useMutation} from "@apollo/client"
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -63,6 +63,8 @@ const Profile = () => {
     const user = dataUser?.getUserById;
     const createdHour = `${user?.created_at[8]}${user?.created_at[9]}/${user?.created_at[5]}${user?.created_at[6]}/${user?.created_at[0]}${user?.created_at[1]}${user?.created_at[2]}${user?.created_at[3]} ${user?.created_at[11]}${user?.created_at[12]}:${user?.created_at[14]}${user?.created_at[15]}`
 
+    const [addBlog] = useMutation(ADD_BLOG);
+
     // CHECK IF ALL THE INFORMATIONS ABOUT USER ALREADY ARRIVED, IF NOT, RETURN LOADING
     if(loadingUser){
         return(
@@ -85,16 +87,28 @@ const Profile = () => {
             return
         }
 
-        const [addBlog] = useMutation(ADD_BLOG, {
+        console.log(selectedFile)
+
+        addBlog({
             variables: {
                 title: title,
                 text: text,
-                type: type,
+                blog_type: type,
                 image: image,
                 author_id: router?.query?.userId,
                 author: user?.username,
             }
+        }).then(() => {
+            alert("Blog created")
+            router.push("/profile")
+        }).catch((error) => {
+            alert("Error: ", error)
+            console.log(error)
+        }).finally(() => {
+            setSelectedFile(undefined)
+            setPreview(undefined)
         })
+
 
         console.log(title, text, type, image);
     }
@@ -155,6 +169,7 @@ const Profile = () => {
                                         <p className="mt-5 font-bold mb-2">Select an image for your blog</p>
                                         <input onChange={onSelectFile} type="file" id="image" name="file" />
                                         {selectedFile && <img className="mt-10" src={preview} />}
+                                        {preview && console.log(selectedFile)}
                                         <Stack className="mt-10" spacing={2} direction="row">
                                             <Button onClick={(e) => createHandle(e)} variant="contained">Create</Button>
                                         </Stack>

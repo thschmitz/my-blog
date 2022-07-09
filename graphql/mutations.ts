@@ -21,6 +21,7 @@ export const ADD_BLOG = gql`
             author
             author_id
             blog_type
+            created_at
         }
     }
 `

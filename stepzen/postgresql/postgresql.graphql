@@ -196,7 +196,6 @@ type Mutation {
     image: String!
     author: String!
     text: String!
-    created_at: DateTime!
     blog_type: String!
     author_id: ID!
     title: String!
@@ -241,15 +240,6 @@ type Mutation {
       type: "postgresql"
       schema: "public"
       table: "user"
-      dml: INSERT
-      configuration: "postgresql_config"
-    )
-
-  insertPost(text: String!, author:String!, author_id: ID!, title: String!, image: String, blog_type: String!): Blog
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      table: "blog"
       dml: INSERT
       configuration: "postgresql_config"
     )
