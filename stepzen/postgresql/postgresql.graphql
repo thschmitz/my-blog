@@ -78,6 +78,16 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+  
+  getIdByEmail(email: String!): User
+    @dbquery(
+      type: "postgresql"
+      query: """
+        SELECT "id" FROM "user" WHERE "email" = $1
+      """
+      configuration: "postgresql_config"
+    
+    )
 
   getVoteUsingBlog_id(id: ID!): [Vote]
     @dbquery(
@@ -141,6 +151,15 @@ type Query {
       SELECT T."author", T."author_id", T."blog_type", T."created_at", T."id", T."image", T."text", T."title"
         FROM "public"."blog" T
         WHERE T."author_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  
+  getBlogsTimeStamp: Blog
+    @dbquery(
+      type: "postgresql"
+      query: """
+        SELECT * FROM "blog" ORDER BY "created_at" DESC LIMIT 1
       """
       configuration: "postgresql_config"
     )

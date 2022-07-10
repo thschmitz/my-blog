@@ -7,6 +7,7 @@ import TimeAgo from "react-timeago"
 import { GET_USER_BY_ID, GET_RECENT_BLOGS } from '../../graphql/queries'
 import Widget from "../../components/Widget"
 import {Jelly} from "@uiball/loaders"
+import Link from "next/link"
 
 const SinglePost = () => {
 
@@ -27,12 +28,12 @@ const SinglePost = () => {
         }
     })
 
-    const author = dataAuthor.getUserById;
+    const author = dataAuthor?.getUserById;
 
     const {data: dataRecentPosts, error: errorRecentPosts} = useQuery(GET_RECENT_BLOGS)
     const recentPosts = dataRecentPosts?.getRecentBlogs;
 
-    if(loadingPosts) {
+    if(loadingPosts || loadingAuthor) {
         return(
             <div className="flex w-full items-center justify-center p-10 text-xl">
                 <Jelly size={50} color="#ff4501"/>
@@ -44,10 +45,10 @@ const SinglePost = () => {
     return (
         <div className="text-center mt-10 lg:flex ">
             <div className="lg:w-3/4 ml-10">
-                <h1 className="text-3xl">{post?.title}</h1>
+                <h1 className="text-3xl font-bold">{post?.title}</h1>
                 <h1 className="text-sm">Posted <TimeAgo date={post?.created_at}/> by <b className="text-red-400">{post?.author}</b></h1>
                 <div className="flex flex-col items-center justify-center mt-10">
-                    <img src={post?.image} className=""/>
+                    <img src={post?.image} className="w-96"/>
                 </div>
                 <div className="flex flex-1 mt-20">
                     <p>{post?.text}</p>
@@ -59,7 +60,7 @@ const SinglePost = () => {
 
                 <div className="text-center mt-32 mb-8 p-12 relative rounded-lg bg-black bg-opacity-20">
                     <div className="absolute left-0 right-0 -top-14 flex justify-center">
-                        <img className="w-20 h-20 rounded-full object-cover" src={`${author?.image}`}/>
+                        <Link href={`/profile/${author?.id}`}><img className="w-20 h-20 cursor-pointer rounded-full object-cover" src={`${author?.image}`}/></Link>
                     </div>
                     <h4 className="text-black my-2 text-sm">r/{post?.blog_type}</h4>
                     <h3 className="text-black my-4 text-xl font-bold">{post?.author}</h3>

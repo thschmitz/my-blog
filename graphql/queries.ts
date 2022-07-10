@@ -73,3 +73,26 @@ export const GET_USER_BY_ID = gql`
         }
     }
 `
+
+export const GET_ID_BY_EMAIL = gql`
+    query MyQuery($email: String!){
+        getIdByEmail(email: $email){
+            id
+        }
+    }
+`
+
+export const GET_RECENT_POST = gql`
+    query MyQuery{
+        getBlogsTimeStamp{
+            id
+            title
+            author_id
+            image
+            text
+            created_at
+            blog_type
+            author
+        }
+    }
+`

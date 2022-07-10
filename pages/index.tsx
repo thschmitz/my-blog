@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import { useQuery } from '@apollo/client'
 import { GET_BLOGS, GET_RECENT_BLOGS } from '../graphql/queries'
 import {Jelly} from "@uiball/loaders"
+import {GET_RECENT_POST} from "../graphql/queries"
 
 const Home: NextPage = () => {
 
@@ -21,6 +22,11 @@ const Home: NextPage = () => {
   const recentPosts = dataRecentPosts?.getRecentBlogs;
 
   console.log("posts: ", recentPosts)
+
+  const {data: dataRecentPost, error: errorRecentBlog, loading: loadingRecentBlog} = useQuery(GET_RECENT_POST);
+  const recentPost = dataRecentPost?.getBlogsTimeStamp;
+
+  console.log("recentPost: ", recentPost)
 
   if(loadingPosts) {
     return(
@@ -37,7 +43,7 @@ const Home: NextPage = () => {
         <title>Blog</title>
       </Head>
       <div className="max-w-5xl my-7 mx-auto">
-        <ContrastPost/>
+        <ContrastPost recentPost={recentPost}/>
       </div>
 
       <div className="flex flex-1">

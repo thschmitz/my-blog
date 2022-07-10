@@ -79,7 +79,7 @@ const Header = () => {
             </div>
             <div className="items-center text-gray-500 mx-5 space-x-20 hidden lg:flex">
                 <div className="text-center flex lg:inline-flex space-x-20">
-                    <p className={`iconWidget ${router.asPath == "/" && "text-red-400"}`}>Home</p>
+                    <Link href="/"><p className={`iconWidget ${router.asPath == "/" && "text-red-400"}`}>Home</p></Link>
                     <p className={`iconWidget ${router.asPath == "/mostviewed" && "text-red-400"}`}>Most Viewed Posts</p>
                     <p className={`iconWidget ${router.asPath == "/recentposts" && "text-red-400"}`}>Recent Posts</p>
                 </div>
