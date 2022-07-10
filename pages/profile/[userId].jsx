@@ -21,7 +21,7 @@ const Profile = () => {
 
     const router = useRouter();
     const {data:session} = useSession();
-    const [value, setValue] = React.useState('1');
+    const [value, setValue] = React.useState('2');
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
     const [ownProfile, setOwnProfile] = useState(false)
@@ -65,7 +65,10 @@ const Profile = () => {
 
     console.log("SessionID: ", sessionId?.id);
     console.log("UserID: ", router.query.userId);
+    console.log("UserSessionImage: ", session?.user?.image)
+    console.log("UserViewedImage: ", user?.image)
 
+    // CHECK IF THE USER LOGGED IS THE SAME AS THE USER THAT IS BEING VIEWED
     useEffect(() => {
         if(sessionId?.id === router.query.userId){
             console.log("userID", user?.id);
@@ -124,7 +127,6 @@ const Profile = () => {
         console.log(title, text, type, image);
     }
 
-    // CHECK IF THE USER LOGGED IS THE SAME AS THE USER THAT IS BEING VIEWED
 
 
     return (
