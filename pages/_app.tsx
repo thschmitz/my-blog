@@ -8,7 +8,7 @@ import {signIn, signOut, useSession} from "next-auth/react"
 import {CHECK_EMAIL} from "../graphql/queries"
 import { Toaster } from 'react-hot-toast'
 
-function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
+function MyApp({ Component, pageProps: {session, ...pageProps} }: any) {
 
 
 
