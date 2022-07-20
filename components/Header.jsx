@@ -31,8 +31,8 @@ const Header = () => {
         }
     };
 
-
     const {data: session} = useSession()
+    console.log(session)
 
     const {data:dataUser, loading:loadingUser, error:errorUser} = useQuery(CHECK_EMAIL, {
         variables: {
@@ -80,10 +80,7 @@ const Header = () => {
             <div className="items-center text-gray-500 mx-5 space-x-20 hidden lg:flex">
                 <div className="text-center flex lg:inline-flex space-x-20">
                     <Link href="/"><p className={`iconWidget ${router.asPath == "/" && "text-red-400"}`}>Home</p></Link>
-                    <p className={`iconWidget ${router.asPath == "/mostviewed" && "text-red-400"}`}>Most Viewed Posts</p>
-                    <p className={`iconWidget ${router.asPath == "/recentposts" && "text-red-400"}`}>Recent Posts</p>
                 </div>
-                <SearchIcon className="h-6 w-6 text-gray-400 cursor-pointer"/>
 
                 {
                     session?
